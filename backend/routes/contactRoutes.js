@@ -16,6 +16,15 @@ const { contactLimiter } = require('../middleware/rateLimiter');
 router.post('/', contactLimiter, async (req, res, next) => {
   const timestamp = new Date().toISOString();
   console.log(`[${timestamp}] 📩 Contact form submission received`);
+  console.log('🧾 Request body:', req.body);
+
+  // Optional: Validate fields before passing to controller
+  const { name, email, message } = req.body;
+  if (!name || !email || !message) {
+    console.warn(`[${timestamp}] ⚠️ Missing fields in contact form`);
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
   try {
     await handleContact(req, res);
   } catch (err) {

@@ -1,28 +1,3 @@
-// // --- CERTIFICATES DATA ---
-// const certificatesData = [
-//     {
-//         title: 'Full Stack Web Development',
-//         issuer: 'Coursera',
-//         date: 'June 2024',
-//         imageUrl: 'https://placehold.co/600x400/1a112b/4f3286?text=Full+Stack+Cert',
-//         verifyUrl: '#' // Placeholder link
-//     },
-//     {
-//         title: 'React - The Complete Guide',
-//         issuer: 'Udemy',
-//         date: 'March 2024',
-//         imageUrl: 'https://placehold.co/600x400/1a112b/4f3286?text=React+Cert',
-//         verifyUrl: '#' // Placeholder link
-//     },
-//     {
-//         title: 'MongoDB for Developers',
-//         issuer: 'MongoDB University',
-//         date: 'January 2024',
-//         imageUrl: 'https://placehold.co/600x400/1a112b/4f3286?text=MongoDB+Cert',
-//         verifyUrl: '#' // Placeholder link
-//     },
-// ];
-
 
 
 const certificatesData = [

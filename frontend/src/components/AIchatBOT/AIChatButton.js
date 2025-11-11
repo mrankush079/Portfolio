@@ -10,7 +10,8 @@ const AIChatButton = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:3003';
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+  // console.log("✅ API_BASE:", API_BASE); // Uncomment to debug
 
   const showChatModal = () => setIsChatOpen(true);
   const closeChatModal = () => setIsChatOpen(false);
@@ -37,9 +38,7 @@ const AIChatButton = () => {
     try {
       const res = await fetch(`${API_BASE}/api/chat`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userMessage.text }),
       });
 
@@ -77,7 +76,6 @@ const AIChatButton = () => {
 
   return (
     <>
-      {/* Floating Chat Button */}
       <button
         onClick={showChatModal}
         className="fixed bottom-6 right-6 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all transform hover:scale-110 z-50 animate-pulse-bounce"
@@ -86,7 +84,6 @@ const AIChatButton = () => {
         <MessageSquare size={28} />
       </button>
 
-      {/* Chat Modal */}
       {isChatOpen && (
         <div className="fixed bottom-24 right-6 sm:right-10 md:right-16 w-[90%] sm:w-80 bg-white border border-gray-300 rounded-xl shadow-xl p-4 z-50 animate-fadeIn flex flex-col max-h-[70vh]">
           <div className="flex justify-between items-center mb-2">
@@ -96,7 +93,6 @@ const AIChatButton = () => {
             </button>
           </div>
 
-          {/* Message History */}
           <div className="flex-1 overflow-y-auto mb-3 space-y-2 pr-1">
             {messages.map((msg, index) => (
               <div
@@ -116,7 +112,6 @@ const AIChatButton = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Field */}
           <div className="flex items-center gap-2">
             <input
               type="text"

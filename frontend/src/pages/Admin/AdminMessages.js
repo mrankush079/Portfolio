@@ -4,12 +4,13 @@ const AdminMessages = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
   const token = localStorage.getItem('token');
-  const API_BASE = process.env.REACT_APP_API_BASE;
+  const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
 
   useEffect(() => {
     if (!token) {
-      console.warn('⚠️ No token found in localStorage');
+      console.warn('🚫 No token found in localStorage');
       setError('Unauthorized: No token found');
       setLoading(false);
       return;
