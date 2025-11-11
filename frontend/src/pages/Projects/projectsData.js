@@ -26,7 +26,7 @@ const projectsData = [
     imageUrl: '/media/images/wonderlust.png',
     alt: 'Screenshot of Wanderlust rental marketplace',
     liveUrl: '',
-    repoUrl: '',
+    repoUrl: 'https://github.com/mrankush079/wonderlust',
     tech: ['MongoDB', 'Express.js', 'React', 'Node.js', 'JWT', 'Cloudinary']
   },
   {
