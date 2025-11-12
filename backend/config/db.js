@@ -1,16 +1,15 @@
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_DB, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+  const uri = process.env.MONGO_URL;
+  if (!uri) throw new Error('❌ MONGO_URL is undefined');
 
+  try {
+    const conn = await mongoose.connect(uri); // No options needed in Mongoose v7+
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`❌ MongoDB connection error: ${error.message}`);
-    process.exit(1); // Exit process with failure
+    process.exit(1);
   }
 };
 
