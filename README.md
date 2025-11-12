@@ -23,7 +23,8 @@ Welcome to **CodeANKUSH**, my personal portfolio built to showcase full-stack de
 
 | Home Page | Admin Login | Certificates |
 |-----------|-------------|--------------|
-| ![Home](https://portfolio-seven-kappa-78.vercel.app/#home) | ![Admin](https://portfolio-seven-kappa-78.vercel.app/admin/dashboard) | ![Certs](https://portfolio-seven-kappa-78.vercel.app/#projects) |
+| ![Home](<img width="1903" height="977" alt="image" src="https://github.com/user-attachments/assets/f1ad151e-c370-4838-bde4-16b8aa384f61" />
+) | ![Admin](https://portfolio-seven-kappa-78.vercel.app/admin/dashboard) | ![Certs](https://portfolio-seven-kappa-78.vercel.app/#projects) |
 
 
 ---
