@@ -5,7 +5,7 @@ const projectsData = [
       'A visually polished, recruiter-ready portfolio built with React and Tailwind CSS. Features animated floating tech icons, AI-powered chatbot, admin login with JWT, and a dynamic project showcase with modals and tooltips.',
     imageUrl: '/media/images/portfolio.png',
     alt: 'Screenshot of Ankush Choudhary Portfolio',
-    liveUrl: 'https://ankush-portfolio.vercel.app',
+    liveUrl: 'https://portfolio-seven-kappa-78.vercel.app',
     repoUrl: 'https://github.com/mrankush079/Portfolio',
     tech: ['React', 'Tailwind CSS', 'JWT', 'Node.js', 'Express.js', 'OpenAI', 'Framer Motion']
   },
