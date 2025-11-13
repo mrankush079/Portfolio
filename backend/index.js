@@ -20,7 +20,8 @@ const FRONTEND_URLS = [
   'https://portfolio-seven-kappa-78.vercel.app',
   'https://portfolio-git-main-mrankush079s-projects.vercel.app',
   'https://portfolio-q375val6j-mrankush079s-projects.vercel.app',
-  'https://portfolio-1-tq71.onrender.com'
+  'https://portfolio-1-tq71.onrender.com',
+  'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app'
 ].filter(Boolean);
 
 const corsOptions = {
