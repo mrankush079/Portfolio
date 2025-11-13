@@ -109,8 +109,6 @@
 
 
 
-
-
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -129,14 +127,19 @@ const PORT = process.env.PORT || 5000;
 const FRONTEND_URLS = [
   process.env.FRONTEND_URL,
   'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app',
-  'http://localhost:3003'
+  'http://localhost:3003',
+  'http://localhost:3000'
 ].filter(Boolean);
 
 console.log(`[${new Date().toISOString()}] 🌐 Allowed origins:`, FRONTEND_URLS);
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || FRONTEND_URLS.includes(origin)) {
+    // origin may be undefined (e.g., mobile apps, Postman) — allow if you want
+    if (!origin) {
+      // optionally allow no‑origin requests (for testing with e.g. Postman)
+      callback(null, true);
+    } else if (FRONTEND_URLS.includes(origin)) {
       callback(null, true);
     } else {
       console.warn(`[${new Date().toISOString()}] ❌ Origin not allowed by CORS: ${origin}`);
@@ -144,8 +147,8 @@ const corsOptions = {
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content‑Type','Authorization'],
   optionsSuccessStatus: 200
 };
 
@@ -155,7 +158,7 @@ connectDB()
     console.log(`[${new Date().toISOString()}] ✅ MongoDB connected`);
     return seedAdmin();
   })
-  .catch((err) => {
+  .catch(err => {
     console.error(`[${new Date().toISOString()}] ❌ MongoDB connection failed:`, err.message);
   });
 
@@ -165,17 +168,17 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 console.log(`[${new Date().toISOString()}] ⚙️ Middleware configured`);
 
-// Debug incoming requests
+// Debug incoming requests (helpful!)
 app.use((req, res, next) => {
   console.log(`📥 ${req.method} ${req.url} | Origin: ${req.headers.origin || 'N/A'}`);
   next();
 });
 
-// Route mounting
+// Routes
 app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
-app.use('/admin', require('./routes/adminLoginRoute')); // mounts /admin/login
+app.use('/admin', require('./routes/adminLoginRoute'));
 app.use('/admin/register', require('./routes/adminRegisterRoute'));
 app.use('/api/chat', require('./routes/chatRoutes'));
 console.log(`[${new Date().toISOString()}] 🚦 Routes mounted`);
