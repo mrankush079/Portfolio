@@ -20,7 +20,17 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-    // Safely access the env-variable
+  //   // Safely access the env-variable
+  // const API_BASE = (import.meta.env?.VITE_API_BASE)
+  //   ? import.meta.env.VITE_API_BASE
+  //   : 'http://localhost:5000';
+
+  // if (!import.meta.env?.VITE_API_BASE) {
+  //   console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
+  // }
+
+
+   // Safely access the env-variable
   const API_BASE = (import.meta.env?.VITE_API_BASE)
     ? import.meta.env.VITE_API_BASE
     : 'http://localhost:5000';
@@ -48,6 +58,7 @@ const AdminLogin = () => {
         password: password.trim()
       };
       console.log(`[${timestamp}] Sending payload:`, payload);
+      console.log('[FETCH] Sending login request to:', `${API_BASE}/admin/login`);
 
       const res = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',

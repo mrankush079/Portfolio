@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -21,7 +20,6 @@ router.post('/login', async (req, res) => {
   console.log(`[${timestamp}]  Admin login attempt:`, { email });
 
   try {
-    // Validation
     if (!email?.trim() || !password?.trim()) {
       return res.status(400).json({ message: 'Email and password are required' });
     }
@@ -43,13 +41,11 @@ router.post('/login', async (req, res) => {
       return res.status(403).json({ message: 'Access denied: Admins only' });
     }
 
-    // Environment validation
     if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
       console.error(`[${timestamp}]  Missing JWT secrets`);
       return res.status(500).json({ message: 'Server misconfiguration' });
     }
 
-    // Token generation
     const accessToken = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
@@ -129,6 +125,35 @@ router.get('/messages', protect, requireAdmin, async (req, res) => {
   } catch (err) {
     console.error(`[${timestamp}]  Message fetch failed:`, err.message);
     res.status(500).json({ error: 'Failed to load messages' });
+  }
+});
+
+/**
+ * @route   DELETE /admin/messages/:id
+ * @desc    Delete a contact message by ID (Admin only)
+ */
+router.delete('/messages/:id', protect, requireAdmin, async (req, res) => {
+  const timestamp = new Date().toISOString();
+  const messageId = req.params.id;
+
+  try {
+    const deleted = await ContactModel.findByIdAndDelete(messageId);
+    if (!deleted) {
+      console.warn(`[${timestamp}]  Message not found: ${messageId}`);
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    await logAction({
+      action: 'Delete Contact Message',
+      user: req.user.email,
+      details: { messageId, route: req.originalUrl }
+    });
+
+    console.log(`[${timestamp}]  Message deleted: ${messageId}`);
+    res.status(200).json({ message: 'Message deleted successfully' });
+  } catch (err) {
+    console.error(`[${timestamp}]  Message deletion error:`, err.message);
+    res.status(500).json({ message: 'Server error while deleting message' });
   }
 });
 

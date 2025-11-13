@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 5000;
 const FRONTEND_URLS = [
   process.env.FRONTEND_URL,
   'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app',
+  'https://portfolio-seven-kappa-78.vercel.app',
    'http://localhost:3003'
 ].filter(Boolean);
 
