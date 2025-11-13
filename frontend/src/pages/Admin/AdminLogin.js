@@ -37,7 +37,7 @@ const AdminLogin = () => {
 
   if (!import.meta.env?.VITE_API_BASE) {
     console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
-    console.log("🔍 VITE_API_BASE:", import.meta.env.VITE_API_BASE);
+
 
   }
 

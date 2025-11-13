@@ -343,7 +343,7 @@ const AdminDashboardSection = () => {
   const API_BASE = import.meta.env?.VITE_API_BASE ||'http://localhost:5000';
   if (!import.meta.env?.VITE_API_BASE) {
     console.warn('VITE_API_BASE is undefined — using fallback:', API_BASE);
-    console.log("🔍 VITE_API_BASE:", import.meta.env.VITE_API_BASE);
+
 
   }
   const token = localStorage.getItem('token');
