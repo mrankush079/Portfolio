@@ -33,7 +33,7 @@ const AdminLogin = () => {
    // Safely access the env-variable
   const API_BASE = (import.meta.env?.VITE_API_BASE)
     ? import.meta.env.VITE_API_BASE
-    : 'http://localhost:5000';
+    :  'https://portfolio-uht3.onrender.com'
 
   if (!import.meta.env?.VITE_API_BASE) {
     console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);

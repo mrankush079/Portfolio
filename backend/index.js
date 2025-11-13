@@ -12,14 +12,12 @@ console.log(`[${new Date().toISOString()}] Environment variables loaded`);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Hardcoded frontend origins (Zerodha-style clone)
-const FRONTEND_URLS = [
-  'https://portfolio-seven-kappa-78.vercel.app',
-  'https://portfolio-git-main-mrankush079s-projects.vercel.app',
-  'https://portfolio-bbmvjiojx-mrankush079s-projects.vercel.app',
-  'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app',
-  'http://localhost:3003'
-];
+// ✅ Load allowed frontend URLs from .env
+const FRONTEND_URLS = process.env.FRONTEND_URLS
+  ? process.env.FRONTEND_URLS.split(',').map(url => url.trim())
+  : [];
+
+console.log('[CORS] Allowed frontend URLs:', FRONTEND_URLS);
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -37,7 +35,7 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Connect to DB and seed admin
+// 🔗 Connect to DB and seed admin
 connectDB()
   .then(() => {
     console.log(`[${new Date().toISOString()}] MongoDB connected`);
@@ -47,28 +45,28 @@ connectDB()
     console.error(`[${new Date().toISOString()}] MongoDB connection failed:`, err.message);
   });
 
-// Middleware
+// ⚙️ Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 console.log(`[${new Date().toISOString()}] Middleware configured`);
 
-// Debug incoming requests
+// 🧭 Debug incoming requests
 app.use((req, res, next) => {
   console.log(`📥 ${req.method} ${req.url}`);
   next();
 });
 
-// Route mounting
+// 🚦 Route mounting
 app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/admin', require('./routes/adminLoginRoute'));
 app.use('/admin/register', require('./routes/adminRegisterRoute'));
 app.use('/api/chat', require('./routes/chatRoutes'));
-console.log(`[${new Date().toISOString()}] 🚦 Routes mounted`);
+console.log(`[${new Date().toISOString()}] Routes mounted`);
 
-// Health check
+// 🩺 Health check
 app.get('/', (req, res) => {
   res.send({ message: 'Portfolio backend is running!' });
 });
@@ -96,12 +94,10 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// Error handler
+// 🛡️ Error handler
 app.use(errorHandler);
 
-// Start server
+// 🚀 Start server
 app.listen(PORT, () => {
   console.log(`[${new Date().toISOString()}] Server running on port ${PORT}`);
 });
-
-

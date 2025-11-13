@@ -112,7 +112,7 @@ const AdminMessages = () => {
   const [deletingId, setDeletingId] = useState(null);
 
   const token = localStorage.getItem('token');
-  const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+  const API_BASE = import.meta.env?.VITE_API_BASE || 'https://portfolio-uht3.onrender.com';
   if (!import.meta.env?.VITE_API_BASE) {
     console.warn('⚠️ VITE_API_BASE is undefined — using fallback:', API_BASE);
   }

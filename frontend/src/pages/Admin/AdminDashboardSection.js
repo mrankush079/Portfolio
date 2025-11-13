@@ -339,7 +339,7 @@ const AdminDashboardSection = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
-  const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+  const API_BASE = import.meta.env?.VITE_API_BASE ||  'https://portfolio-uht3.onrender.com';
   if (!import.meta.env?.VITE_API_BASE) {
     console.warn('VITE_API_BASE is undefined — using fallback:', API_BASE);
   }
