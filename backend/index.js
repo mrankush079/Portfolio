@@ -20,7 +20,7 @@ const FRONTEND_URLS = [
   'https://portfolio-git-main-mrankush079s-projects.vercel.app',
   'https://portfolio-q375val6j-mrankush079s-projects.vercel.app',
   'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app',
-  'http://localhost:3003'
+  // 'http://localhost:3003'
 ].filter(Boolean);
 
 const corsOptions = {
