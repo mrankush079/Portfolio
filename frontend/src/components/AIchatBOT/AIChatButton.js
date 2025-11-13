@@ -11,7 +11,7 @@ const AIChatButton = () => {
   const messagesEndRef = useRef(null);
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
-  // console.log("✅ API_BASE:", API_BASE); // Uncomment to debug
+  // console.log(" API_BASE:", API_BASE); // Uncomment to debug
 
   const showChatModal = () => setIsChatOpen(true);
   const closeChatModal = () => setIsChatOpen(false);
@@ -50,7 +50,7 @@ const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
       setMessages((prev) => [...prev, botReply]);
       speak(botReply.text);
     } catch (err) {
-      console.error('❌ Chat error:', err.message);
+      console.error(' Chat error:', err.message);
       const errorReply = {
         sender: 'bot',
         text: 'AI assistant is currently unavailable.',

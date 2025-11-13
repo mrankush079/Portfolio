@@ -26,5 +26,8 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// ✅ Export as default to avoid destructuring issues
+//  Export as default to avoid destructuring issues
 module.exports = mongoose.model('User', userSchema);
+
+
+

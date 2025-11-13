@@ -24,16 +24,16 @@ const projectSchema = new mongoose.Schema(
       trim: true,
     },
     thumbnail: {
-      type: String, // ✅ Optional: for uploaded image path
+      type: String, //  Optional: for uploaded image path
       default: '',
     },
     featured: {
-      type: Boolean, // ✅ Optional: for dashboard filtering
+      type: Boolean, //  Optional: for dashboard filtering
       default: false,
     },
   },
   {
-    timestamps: true, // ✅ Adds createdAt and updatedAt automatically
+    timestamps: true, //  Adds createdAt and updatedAt automatically
   }
 );
 

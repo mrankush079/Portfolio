@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { Mail, Phone, MapPin, GitHub, Linkedin } from 'react-feather';
 

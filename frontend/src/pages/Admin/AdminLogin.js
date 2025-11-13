@@ -20,7 +20,15 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+    // Safely access the env-variable
+  const API_BASE = (import.meta.env?.VITE_API_BASE)
+    ? import.meta.env.VITE_API_BASE
+    : 'http://localhost:5000';
+
+  if (!import.meta.env?.VITE_API_BASE) {
+    console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
+  }
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -73,11 +81,11 @@ const AdminLogin = () => {
       localStorage.setItem('user', JSON.stringify({ email: data.email, role: data.role }));
 
       // Debug logs to confirm localStorage
-      console.log("🔐 Stored user:", localStorage.getItem('user'));
-      console.log("🔐 Stored token:", localStorage.getItem('token'));
+      console.log(" Stored user:", localStorage.getItem('user'));
+      console.log(" Stored token:", localStorage.getItem('token'));
 
-      toast.success('✅ Admin login successful');
-      console.log(`[${timestamp}] ✅ Redirecting to /admin/dashboard`);
+      toast.success(' Admin login successful');
+      console.log(`[${timestamp}]  Redirecting to /admin/dashboard`);
 
       // Use navigate or fallback to window.location.href
       navigate('/admin/dashboard');
@@ -148,7 +156,7 @@ const AdminLogin = () => {
             loading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02]'
           }`}
         >
-          {loading ? 'Logging in...' : '🔐 Login'}
+          {loading ? 'Logging in...' : ' Login'}
         </button>
       </form>
     </div>
@@ -156,3 +164,9 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
+
+
+
+
+
+

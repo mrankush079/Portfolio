@@ -1,6 +1,7 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 import AdminLogin from './pages/Admin/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboardSection';
 import NavbarLayout from './components/Header/Navbar';
@@ -12,6 +13,7 @@ import Certificates from './pages/certificates/CertificatesSection';
 import Contact from './components/Contact/ContactSection';
 import FooterComponent from './components/FooterComponent/FooterComponent';
 import AIChatButton from './components/AIchatBOT/AIChatButton';
+
 import './index.css';
 
 const PortfolioLayout = () => {
@@ -69,7 +71,6 @@ const PortfolioLayout = () => {
   );
 };
 
-//  Admin route protection
 const ProtectedAdminRoute = ({ children }) => {
   let isAdmin = false;
   try {
@@ -77,10 +78,16 @@ const ProtectedAdminRoute = ({ children }) => {
     const token = localStorage.getItem('token');
     isAdmin = user?.role === 'admin' && !!token;
   } catch (err) {
-    console.warn(' Invalid user data in localStorage');
+    console.warn(' Invalid user data in localStorage:', err);
   }
 
-  return isAdmin ? children : <Navigate to="/admin-login" replace />;
+  if (!isAdmin) {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    return <Navigate to="/admin-login" replace />;
+  }
+
+  return children;
 };
 
 export default function App() {
@@ -96,7 +103,6 @@ export default function App() {
           </ProtectedAdminRoute>
         }
       />
-      {/* Optional: Fallback route */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

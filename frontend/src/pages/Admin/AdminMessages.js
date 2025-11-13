@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 
 const AdminMessages = () => {
@@ -7,10 +8,13 @@ const AdminMessages = () => {
 
   const token = localStorage.getItem('token');
   const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+  if (!import.meta.env?.VITE_API_BASE) {
+    console.warn(' VITE_API_BASE is undefined — using fallback:', API_BASE);
+  }
 
   useEffect(() => {
     if (!token) {
-      console.warn('🚫 No token found in localStorage');
+      console.warn(' No token found in localStorage');
       setError('Unauthorized: No token found');
       setLoading(false);
       return;
@@ -18,24 +22,26 @@ const AdminMessages = () => {
 
     const fetchMessages = async () => {
       const timestamp = new Date().toISOString();
-      console.log(`[${timestamp}] 📩 Fetching admin messages...`);
+      console.log(`[${timestamp}]  Fetching admin messages from ${API_BASE}/api/admin/messages`);
 
       try {
         const res = await fetch(`${API_BASE}/api/admin/messages`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
+        console.log(`[${timestamp}] Response status:`, res.status);
         if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.message || 'Failed to fetch messages');
+          const errData = await res.json().catch(() => ({}));
+          const errMsg = errData.message || `Failed to fetch messages: status ${res.status}`;
+          throw new Error(errMsg);
         }
 
         const data = await res.json();
         setMessages(data);
-        console.log(`[${timestamp}] ✅ Messages loaded: ${data.length}`);
-        console.log('📩 Message data:', data);
+        console.log(`[${timestamp}]  Messages loaded: ${Array.isArray(data) ? data.length : 'unknown'}`, data);
+
       } catch (err) {
-        console.error('❌ Error fetching messages:', err.message);
+        console.error(' Error fetching messages:', err.message);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -68,12 +74,10 @@ const AdminMessages = () => {
             </thead>
             <tbody>
               {messages.map((msg) => (
-                <tr key={msg._id} className="border-b border-purple-700/30">
+                <tr key={msg._id || `${msg.email}-${msg.createdAt}`} className="border-b border-purple-700/30">
                   <td className="p-3">{msg.name || '—'}</td>
                   <td className="p-3">{msg.email || '—'}</td>
-                  <td className="p-3 whitespace-pre-wrap break-words max-w-xs">
-                    {msg.message || '—'}
-                  </td>
+                  <td className="p-3 whitespace-pre-wrap break-words max-w-xs">{msg.message || '—'}</td>
                   <td className="p-3">
                     {msg.createdAt
                       ? new Date(msg.createdAt).toLocaleString()

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -6,42 +7,47 @@ const { UserModel } = require('../models/UserModel');
 const { RefreshTokenModel } = require('../models/RefreshTokenModel');
 
 // @route   POST /api/auth/login
-// @desc    Admin login
+// @desc    Admin login (secure & structured)
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const timestamp = new Date().toISOString();
-  console.log(`[${timestamp}] 🔐 Login request received:`, { email });
+
+  console.log(`[${timestamp}]  Login attempt:`, { email });
 
   try {
-    // ✅ Validate input
+    //  Validate input
     if (!email?.trim() || !password?.trim()) {
-      console.warn(`[${timestamp}] ⚠️ Missing email or password`);
+      console.warn(`[${timestamp}]  Missing email or password`);
       return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    // ✅ Find user
-    const user = await UserModel.findOne({ email: email.trim() });
+    //  Fetch user
+    const user = await UserModel.findOne({ email: email.trim().toLowerCase() });
     if (!user) {
-      console.warn(`[${timestamp}] ❌ User not found:`, email);
+      console.warn(`[${timestamp}]  No user found with email: ${email}`);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    console.log(`[${timestamp}] 👤 User found: ${user.email} | Role: ${user.role}`);
-
-    // ✅ Check password
+    // Verify password
     const isMatch = await bcrypt.compare(password.trim(), user.password);
     if (!isMatch) {
-      console.warn(`[${timestamp}] ❌ Password mismatch for:`, email);
+      console.warn(`[${timestamp}]  Incorrect password for ${email}`);
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // ✅ Check role
+    //  Ensure admin role
     if (user.role !== 'admin') {
-      console.warn(`[${timestamp}] 🚫 Access denied: Not an admin →`, user.role);
+      console.warn(`[${timestamp}]  Unauthorized role: ${user.role}`);
       return res.status(403).json({ message: 'Access denied: Admins only' });
     }
 
-    // ✅ Generate tokens
+    //  Environment sanity check
+    if (!process.env.JWT_SECRET || !process.env.JWT_REFRESH_SECRET) {
+      console.error(`[${timestamp}]  Missing JWT secrets in environment`);
+      return res.status(500).json({ message: 'Server misconfiguration' });
+    }
+
+    //  Generate tokens
     const accessToken = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
@@ -54,25 +60,28 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    //  Store refresh token in DB
     await RefreshTokenModel.create({
       token: refreshToken,
       userId: user._id,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     });
 
-    console.log(`[${timestamp}] ✅ Login successful for: ${user.email}`);
-    console.log(`[${timestamp}] 📤 Sending tokens...`);
+    console.log(`[${timestamp}]  Login successful for: ${user.email}`);
 
-    // ✅ Send response
+    //  Send tokens and profile info
     res.status(200).json({
+      message: 'Login successful',
       accessToken,
       refreshToken,
-      email: user.email,
-      role: user.role,
-      name: user.name || 'Admin'
+      user: {
+        email: user.email,
+        name: user.name || 'Admin',
+        role: user.role
+      }
     });
   } catch (err) {
-    console.error(`[${timestamp}] 🔥 Login error:`, err.message);
+    console.error(`[${timestamp}]  Login error:`, err.message);
     res.status(500).json({ message: 'Server error during login' });
   }
 });

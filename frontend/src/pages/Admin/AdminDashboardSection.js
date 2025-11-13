@@ -16,11 +16,18 @@ const AdminDashboardSection = () => {
   const itemsPerPage = 10;
 
   const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+  if (!import.meta.env?.VITE_API_BASE) {
+    console.warn(' VITE_API_BASE is undefined — using fallback:', API_BASE);
+  }
   const token = localStorage.getItem('token');
 
   const logAction = async (action, details = {}) => {
-    if (!token) return;
+    if (!token) {
+      console.warn('No token for audit log');
+      return;
+    }
     try {
+      console.log('Logging action:', action, details);
       await fetch(`${API_BASE}/api/admin/audit-logs`, {
         method: 'POST',
         headers: {
@@ -36,6 +43,7 @@ const AdminDashboardSection = () => {
 
   const handleLogout = async () => {
     try {
+      console.log('Logging out admin');
       await fetch(`${API_BASE}/api/admin/logout`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
@@ -51,13 +59,19 @@ const AdminDashboardSection = () => {
   useEffect(() => {
     if (!token) {
       console.warn('No token found in localStorage');
+      setLoading(false);
       return;
     }
 
     const fetchData = async () => {
       setLoading(true);
       try {
-        const headers = { Authorization: `Bearer ${token}` };
+        console.log('Fetching dashboard data from:', API_BASE);
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+
         const endpoints = [
           `${API_BASE}/api/admin/summary`,
           `${API_BASE}/api/admin/users`,
@@ -66,14 +80,26 @@ const AdminDashboardSection = () => {
           `${API_BASE}/api/admin/audit-logs`
         ];
 
-        const responses = await Promise.allSettled(
-          endpoints.map(url => fetch(url, { headers }))
-        );
+        const fetchPromises = endpoints.map(url => {
+          console.log('→ Fetching', url);
+          return fetch(url, { headers });
+        });
+
+        const responses = await Promise.allSettled(fetchPromises);
 
         const results = await Promise.all(
-          responses.map(res =>
-            res.status === 'fulfilled' ? res.value.json() : Promise.resolve([])
-          )
+          responses.map((res, index) => {
+            if (res.status === 'fulfilled') {
+              console.log(`✔️ Response from ${endpoints[index]} status:`, res.value.status);
+              return res.value.json().catch(err => {
+                console.error(`Error parsing JSON from ${endpoints[index]}:`, err);
+                return null;
+              });
+            } else {
+              console.error(` Fetch failed for ${endpoints[index]}:`, res.reason);
+              return null;
+            }
+          })
         );
 
         setStats(results[0] || {});
@@ -82,7 +108,7 @@ const AdminDashboardSection = () => {
         setMessages(results[3] || []);
         setLogs(results[4] || []);
 
-        console.log('✅ Dashboard data loaded:', {
+        console.log(' Dashboard data loaded:', {
           stats: results[0],
           users: results[1],
           projects: results[2],
@@ -111,7 +137,7 @@ const AdminDashboardSection = () => {
   };
 
   const filteredItems = (items) =>
-    items.filter((item) =>
+    items.filter(item =>
       Object.values(item)
         .join(' ')
         .toLowerCase()
@@ -142,7 +168,7 @@ const AdminDashboardSection = () => {
           onClick={handleLogout}
           className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-all"
         >
-          🔓 Logout
+           Logout
         </button>
       </div>
 
@@ -167,7 +193,7 @@ const AdminDashboardSection = () => {
           type="text"
           placeholder={`Search ${activeTab}...`}
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           className="mb-6 px-4 py-2 rounded bg-[#1a102e] text-white placeholder-gray-400 border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       )}
@@ -188,38 +214,25 @@ const AdminDashboardSection = () => {
             </div>
           )}
 
-            {activeTab === 'users' && (
-              <List
-              title={
-              <span className="flex items-center">
-             <FaUser className="text-purple-400 mr-2" />
-               Users
-               </span>
-              }
-             items={paginatedItems(users)}
-             fields={['name', 'email', 'role']}
-               />
-               )}
+          {activeTab === 'users' && (
+            <List
+              title={<span className="flex items-center"><FaUser className="text-purple-400 mr-2" />Users</span>}
+              items={paginatedItems(users)}
+              fields={['name', 'email', 'role']}
+            />
+          )}
 
           {activeTab === 'projects' && (
             <List title="Projects" items={paginatedItems(projects)} fields={['title', 'techStack']} />
           )}
 
-             {activeTab === 'messages' && (
-  <>
-    <List
-      title={
-        <span className="flex items-center">
-          <FaEnvelope className="text-purple-400 mr-2" />
-          Messages
-        </span>
-      }
-      items={paginatedItems(messages)}
-      fields={['name', 'email', 'message']}
-    />
-    ...
-  </>
-)}
+          {activeTab === 'messages' && (
+            <List
+              title={<span className="flex items-center"><FaEnvelope className="text-purple-400 mr-2" />Messages</span>}
+              items={paginatedItems(messages)}
+              fields={['name', 'email', 'message']}
+            />
+          )}
 
           {activeTab === 'logs' && (
             <List title="Audit Logs" items={paginatedItems(logs)} fields={['action', 'user', 'details', 'createdAt']} />
@@ -253,7 +266,8 @@ const Card = ({ title, value }) => (
     <p className="text-2xl font-bold text-purple-400">{value ?? '—'}</p>
   </div>
 );
-   const List = ({ title, items, fields }) => (
+
+const List = ({ title, items, fields }) => (
   <div>
     <h3 className="text-xl font-semibold text-purple-400 mb-4">{title}</h3>
     <div className="overflow-x-auto">
@@ -261,10 +275,7 @@ const Card = ({ title, value }) => (
         <thead>
           <tr>
             {fields.map(f => (
-              <th
-                key={f}
-                className="px-4 py-2 text-gray-400 capitalize border-b border-gray-700"
-              >
+              <th key={f} className="px-4 py-2 text-gray-400 capitalize border-b border-gray-700">
                 {f}
               </th>
             ))}
@@ -273,19 +284,13 @@ const Card = ({ title, value }) => (
         <tbody>
           {items.length === 0 ? (
             <tr>
-              <td
-                colSpan={fields.length}
-                className="px-4 py-4 text-center text-gray-500"
-              >
+              <td colSpan={fields.length} className="px-4 py-4 text-center text-gray-500">
                 No data available
               </td>
             </tr>
           ) : (
             items.map((item, idx) => (
-              <tr
-                key={idx}
-                className="border-t border-gray-700 hover:bg-purple-900/10"
-              >
+              <tr key={idx} className="border-t border-gray-700 hover:bg-purple-900/10">
                 {fields.map(f => (
                   <td key={f} className="px-4 py-2 text-gray-200">
                     {Array.isArray(item[f])

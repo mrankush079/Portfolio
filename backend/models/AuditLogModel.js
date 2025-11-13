@@ -1,13 +1,21 @@
+
 const mongoose = require('mongoose');
 
-const AuditLogSchema = new mongoose.Schema({
-  action: { type: String, required: true },
-  user: { type: String, required: true }, // ✅ Always required for traceability
-  details: { type: Object, default: {} }, // ✅ Defensive default
-  createdAt: { type: Date, default: Date.now } // ✅ Use createdAt for consistency
-});
+const AuditLogSchema = new mongoose.Schema(
+  {
+    action:   { type: String, required: true, trim: true },
+    user:     { type: String, required: true, trim: true },
+    details:  { type: mongoose.Schema.Types.Mixed, default: {} },
+  },
+  {
+    timestamps: true,            // adds createdAt & updatedAt automatically :contentReference[oaicite:0]{index=0}
+    versionKey: false
+  }
+);
 
-// ✅ Prevent OverwriteModelError during dev/hot reload
+// Create an index for faster retrieval if needed
+AuditLogSchema.index({ createdAt: -1 });
+
 const AuditLogModel = mongoose.models.AuditLog || mongoose.model('AuditLog', AuditLogSchema);
 
 module.exports = { AuditLogModel };
