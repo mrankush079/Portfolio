@@ -16,12 +16,11 @@ const PORT = process.env.PORT || 5000;
 //  Allowed frontend origins
 const FRONTEND_URLS = [
   process.env.FRONTEND_URL,
-  'http://localhost:3003',
   'https://portfolio-seven-kappa-78.vercel.app',
   'https://portfolio-git-main-mrankush079s-projects.vercel.app',
   'https://portfolio-q375val6j-mrankush079s-projects.vercel.app',
-  'https://portfolio-uht3.onrender.com',
-  'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app'
+  'https://portfolio-mxq8cr210-mrankush079s-projects.vercel.app',
+  'http://localhost:3003'
 ].filter(Boolean);
 
 const corsOptions = {
