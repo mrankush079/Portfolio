@@ -18,10 +18,12 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
     "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.0.0",
     "mongoose": "^8.19.3",
+    "morgan": "^1.10.1",
     "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.10"
   },

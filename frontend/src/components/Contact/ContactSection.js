@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Send, Mail, Phone, MapPin, GitHub, Linkedin } from 'react-feather';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,14 +20,6 @@ const Contact = () => {
     console.log('import.meta.env.PROD:', import.meta.env?.PROD);
     console.groupEnd();
   }, []);
-
-  // Safely access the env-variable
-  // const API_BASE = (import.meta.env?.VITE_API_BASE)
-  //   ? import.meta.env.VITE_API_BASE
-  //   : 'http://localhost:5000';
-  // if (!import.meta.env?.VITE_API_BASE) {
-  //   console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
-  // }
 
 
   const API_BASE = 'https://portfolio-uht3.onrender.com';
