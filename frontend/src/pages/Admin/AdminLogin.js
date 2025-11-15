@@ -20,26 +20,22 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //   // Safely access the env-variable
-  // const API_BASE = (import.meta.env?.VITE_API_BASE)
+
+  //  // Safely access the env-variable
+  // const API_BASE = (import.meta.env?.VITE_API_BASE) 
   //   ? import.meta.env.VITE_API_BASE
   //   : 'http://localhost:5000';
 
   // if (!import.meta.env?.VITE_API_BASE) {
   //   console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
+
+
   // }
+  // Directly use hardcoded backend URL
+const API_BASE = 'https://portfolio-uht3.onrender.com';
 
-
-   // Safely access the env-variable
-  const API_BASE = (import.meta.env?.VITE_API_BASE)
-    ? import.meta.env.VITE_API_BASE
-    : 'http://localhost:5000';
-
-  if (!import.meta.env?.VITE_API_BASE) {
-    console.warn(' VITE_API_BASE not set — using fallback:', API_BASE);
-
-
-  }
+// Optional: log to confirm it's being used
+console.info('Using hardcoded API_BASE:', API_BASE);
 
 
   const handleLogin = async (e) => {

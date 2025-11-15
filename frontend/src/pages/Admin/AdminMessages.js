@@ -111,13 +111,25 @@ const AdminMessages = () => {
   const [error, setError] = useState('');
   const [deletingId, setDeletingId] = useState(null);
 
-  const token = localStorage.getItem('token');
-  const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
-  if (!import.meta.env?.VITE_API_BASE) {
-    console.warn('⚠️ VITE_API_BASE is undefined — using fallback:', API_BASE);
+  // const token = localStorage.getItem('token');
+  // const API_BASE = import.meta.env?.VITE_API_BASE || 'http://localhost:5000';
+  // if (!import.meta.env?.VITE_API_BASE) {
+  //   console.warn('⚠️ VITE_API_BASE is undefined — using fallback:', API_BASE);
 
 
-  }
+  // }
+
+
+
+
+  // Get token from localStorage
+const token = localStorage.getItem('token');
+
+// Use hardcoded backend URL
+const API_BASE = 'https://portfolio-uht3.onrender.com';
+
+// Optional: confirm it's being used
+console.info('✅ Using hardcoded API_BASE:', API_BASE);
 
   useEffect(() => {
     if (!token) {

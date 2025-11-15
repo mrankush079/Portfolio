@@ -340,12 +340,12 @@ const AdminDashboardSection = () => {
   const itemsPerPage = 10;
 
 
-  const API_BASE = import.meta.env?.VITE_API_BASE ||'http://localhost:5000';
-  if (!import.meta.env?.VITE_API_BASE) {
-    console.warn('VITE_API_BASE is undefined — using fallback:', API_BASE);
+// Hardcoded backend URL (no .env dependency)
+const API_BASE = 'https://portfolio-uht3.onrender.com';
 
+// Optional: log to confirm it's being used
+console.info('Using hardcoded API_BASE:', API_BASE);
 
-  }
   const token = localStorage.getItem('token');
 
   // Log admin actions
