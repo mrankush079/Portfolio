@@ -29,36 +29,18 @@ const projectsData = [
     repoUrl: 'https://github.com/mrankush079/wonderlust',
     tech: ['MongoDB', 'Express.js', 'React', 'Node.js', 'JWT', 'Cloudinary']
   },
+
   {
-    title: 'Garage Billing System',
-    description:
-      'A desktop application built with Java and MySQL for managing vehicle service center billing. Includes customer management, invoice generation, and service tracking.',
-    imageUrl: '/media/images/garage billing.png',
-    alt: 'Screenshot of Garage Billing System',
-    liveUrl: '',
-    repoUrl: 'https://github.com/mrankush079/GarageBillingSystem',
-    tech: ['Java', 'MySQL', 'Swing', 'JDBC']
+   title: "WeatherFlow – Full-Stack Weather Application",
+   description: "WeatherFlow is a simple, beautiful, and responsive weather application built with React on the frontend and a Java + Spring Boot REST API on the backend. It provides current weather conditions and a multi-day forecast for any city, featuring dynamic styling (color gradients) and icons based on the weather conditions and temperature.",
+   imageUrl: "/media/images/WeatherFlow.png",
+   alt: "Screenshot of WeatherFlow Application",
+   liveUrl: "https://portfolio-seven-kappa-78.vercel.app/",
+   repoUrl: "https://github.com/mrankush079/weather-App",
+   tech: ["React", "Java", "Spring Boot", "REST API", "CSS", "Responsive Design"]
   },
-  {
-    title: 'BookMyTrain',
-    description:
-      'A frontend simulation of IRCTC’s train booking system. Users can search trains, book tickets, and cancel reservations. Built with HTML, CSS, and JavaScript.',
-    imageUrl: '/media/images/bookmy tarin.png',
-    alt: 'Screenshot of BookMyTrain IRCTC clone',
-    liveUrl: 'https://ankush0719.github.io/BookMyTrain/',
-    repoUrl: 'https://github.com/mrankush079/BookMyTrain',
-    tech: ['HTML', 'CSS', 'JavaScript']
-  },
-  {
-    title: 'Delta App – MERN CRUD',
-    description:
-      'A full-stack MERN app for managing user data with CRUD operations. Includes form validation, authentication, and responsive UI.',
-    imageUrl: '/media/images/delta app.png',
-    alt: 'Screenshot of Delta App MERN CRUD',
-    liveUrl: '',
-    repoUrl: 'https://github.com/mrankush079/Delta_App',
-    tech: ['MongoDB', 'Express.js', 'React', 'Node.js']
-  },
+
+
   {
     title: 'To-Do List Web App',
     description:

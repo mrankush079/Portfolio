@@ -57,7 +57,7 @@ const About = () => {
               I specialize in responsive UI/UX with Tailwind CSS and Framer Motion, secure RESTful APIs, and scalable backend logic. My toolkit includes MongoDB, MySQL, GitHub, Postman, and Agile workflows and always eager to tackle new challenges.
             </p>
 
-            {/* Stats */}
+            {/* Stats
             <div className="flex flex-wrap justify-center md:justify-start gap-8 mb-8">
               {[
                 { label: 'Years Experience', value: '1+' },
@@ -69,7 +69,23 @@ const About = () => {
                   <span className="text-gray-400">{stat.label}</span>
                 </div>
               ))}
-            </div>
+            </div> */}
+
+
+            {/* Stats */}
+<div className="flex flex-wrap justify-center md:justify-start gap-8 mb-8">
+  {[
+    { label: 'Months Hands-On Development', value: '6+' },
+    { label: 'Projects Built & Deployed', value: '10+' },
+    { label: 'Code Reviews & Peer Feedback', value: '95%' },
+  ].map((stat) => (
+    <div key={stat.label} className="text-center">
+      <span className="block text-3xl font-bold text-purple-400">{stat.value}</span>
+      <span className="text-gray-400">{stat.label}</span>
+    </div>
+  ))}
+</div>
+
 
             {/* CTA */}
             <a
