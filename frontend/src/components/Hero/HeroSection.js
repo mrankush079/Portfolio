@@ -23,11 +23,11 @@ const Hero = () => {
   ];
 
   const handleDownload = () => {
-    fetch('/Ankush-java-mern-dev.pdf')
+    fetch('/Full-Stack-dev.Ankush.pdf')
       .then((res) => {
         if (!res.ok) throw new Error('File not found');
         const link = document.createElement('a');
-        link.href = '/Ankush-java-mern-dev.pdf';
+        link.href = '/Full-Stack-dev.Ankush.pdf';
         link.download = 'Ankush_Choudhary_CV.pdf';
         document.body.appendChild(link);
         link.click();
